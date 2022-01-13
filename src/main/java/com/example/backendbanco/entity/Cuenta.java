@@ -13,9 +13,6 @@ public class Cuenta {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(name="nombre")
-    private String nombre;
-
     @Column(name="numero")
     private BigDecimal numero;
 
