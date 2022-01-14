@@ -8,11 +8,17 @@ import com.example.backendbanco.entity.Movimiento;
 import com.example.backendbanco.mapper.MovimientoMapper;
 import com.example.backendbanco.repository.CuentaRepository;
 import com.example.backendbanco.repository.MovimientoRepository;
+import com.example.backendbanco.utils.ExcelExporter;
+import com.example.backendbanco.utils.FilterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -20,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -33,6 +40,8 @@ public class MovimientoController {
 
     @Autowired
     private MovimientoMapper mapper;
+
+    List<Movimiento> movimientos;
 
     @RequestMapping(value="list")
     public ResponseEntity index() {
@@ -86,5 +95,28 @@ public class MovimientoController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(outDto);
+    }
+
+    @PostMapping(value = "/search/filters")
+    public void createUpdate(@RequestBody FilterRequest request, HttpServletResponse response) throws IOException {
+        movimientos = repository
+                .findByFechaBetweenAndCuentaClienteNombre(request.fechaInicio, request.fechaFin, request.nombreCliente);
+
+        exportToExcel(response);
+    }
+
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=movimientos_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Movimiento> list = movimientos;
+
+        ExcelExporter excelExporter = new ExcelExporter(list);
+        excelExporter.export(response);
     }
 }

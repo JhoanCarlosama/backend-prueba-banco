@@ -74,4 +74,13 @@ public class ClienteController {
                 .status(HttpStatus.OK)
                 .body(outDto);
     }
+
+    @GetMapping(value = "/search/name/{name}")
+    public ResponseEntity delete(@PathVariable String name) {
+        Cliente cliente = repository.findByNombre(name);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cliente);
+    }
 }
