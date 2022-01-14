@@ -4,15 +4,15 @@ import com.example.backendbanco.dto.ClienteDto;
 import com.example.backendbanco.entity.Cliente;
 import com.example.backendbanco.mapper.ClienteMapper;
 import com.example.backendbanco.repository.ClienteRepository;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -37,5 +37,41 @@ public class ClienteController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(list);
+    }
+
+    @GetMapping(value = "/show/{id}")
+    public ResponseEntity show(@PathVariable Long id) {
+        Optional<Cliente> cliente = repository.findById(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cliente);
+    }
+
+    @PostMapping(value = "/create-update")
+    public ResponseEntity createUpdate(@RequestBody ClienteDto dto) {
+        if (dto.getId() != null) {
+            Cliente cliente = repository.findById(dto.getId()).orElse(null);
+            cliente.setNombre(dto.getNombre());
+            cliente.setDireccion(dto.getDireccion());
+            cliente.setTelefono(dto.getTelefono());
+            cliente = repository.save(cliente);
+        } else {
+            repository.save(mapper.clienteDtoToCliente(dto));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(dto);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        Cliente cliente = repository.findById(id).orElse(null);
+        repository.delete(cliente);
+        ClienteDto outDto = mapper.clienteToClienteDto(cliente);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(outDto);
     }
 }

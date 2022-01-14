@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -18,12 +18,12 @@ public class Movimiento {
     private String tipo;
 
     @Column(name="fecha")
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     @Column(name="valor")
     private BigDecimal valor;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "id_cuenta", nullable = false)
     private Cuenta cuenta;
 }

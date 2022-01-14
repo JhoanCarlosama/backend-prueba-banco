@@ -1,4 +1,9 @@
 package com.example.backendbanco.repository;
 
-public class CuentaRepository {
+import com.example.backendbanco.entity.Cuenta;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 }

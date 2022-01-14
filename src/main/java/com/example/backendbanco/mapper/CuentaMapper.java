@@ -25,11 +25,17 @@ public class CuentaMapper {
     }
 
     public Cuenta cuentaDtoToCuenta(CuentaDto dto){
+        Cliente aux = new Cliente();
+        aux.setId(dto.getCliente().getId());
+        aux.setNombre(dto.getCliente().getNombre());
+        aux.setDireccion(dto.getCliente().getDireccion());
+        aux.setTelefono(dto.getCliente().getTelefono());
+
         Cuenta obj = new Cuenta();
         obj.setId(obj.getId());
         obj.setNumero(dto.getNumero());
         obj.setSaldo(dto.getSaldo());
-        //obj.setCliente(dto.getCliente());
+        obj.setCliente(aux);
         return obj;
     }
 }
