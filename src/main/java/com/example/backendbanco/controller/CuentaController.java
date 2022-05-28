@@ -3,6 +3,7 @@ package com.example.backendbanco.controller;
 import com.example.backendbanco.dto.CuentaDto;
 import com.example.backendbanco.entity.Cliente;
 import com.example.backendbanco.entity.Cuenta;
+import com.example.backendbanco.entity.Respuesta;
 import com.example.backendbanco.mapper.CuentaMapper;
 import com.example.backendbanco.repository.ClienteRepository;
 import com.example.backendbanco.repository.CuentaRepository;
@@ -44,12 +45,18 @@ public class CuentaController {
     }
 
     @GetMapping(value = "/show/{id}")
-    public ResponseEntity show(@PathVariable Long id) {
+    public ResponseEntity<?> show(@PathVariable Long id) {
         Optional<Cuenta> cuenta = repository.findById(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(cuenta);
+        Respuesta respuesta = Respuesta.builder()
+                .status(200)
+                .type("success")
+                .title("Perfecto!")
+                .message("Se encontró la cuenta con éxito.")
+                .data(cuenta)
+                .build();
+
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     @PostMapping(value = "/create-update")

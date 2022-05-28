@@ -2,6 +2,7 @@ package com.example.backendbanco.controller;
 
 import com.example.backendbanco.dto.ClienteDto;
 import com.example.backendbanco.entity.Cliente;
+import com.example.backendbanco.entity.Respuesta;
 import com.example.backendbanco.mapper.ClienteMapper;
 import com.example.backendbanco.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.util.JSONPObject;
@@ -40,12 +41,17 @@ public class ClienteController {
     }
 
     @GetMapping(value = "/show/{id}")
-    public ResponseEntity show(@PathVariable Long id) {
+    public ResponseEntity<?> show(@PathVariable Long id) {
         Optional<Cliente> cliente = repository.findById(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(cliente);
+        Respuesta respuesta = Respuesta.builder()
+                .status(200)
+                .type("success")
+                .title("Perfecto!")
+                .message("Se encontró el cliente con éxito.")
+                .data(cliente)
+                .build();
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     @PostMapping(value = "/create-update")

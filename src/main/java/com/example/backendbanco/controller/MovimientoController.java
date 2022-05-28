@@ -5,6 +5,7 @@ import com.example.backendbanco.dto.MovimientoDto;
 import com.example.backendbanco.entity.Cliente;
 import com.example.backendbanco.entity.Cuenta;
 import com.example.backendbanco.entity.Movimiento;
+import com.example.backendbanco.entity.Respuesta;
 import com.example.backendbanco.mapper.MovimientoMapper;
 import com.example.backendbanco.repository.CuentaRepository;
 import com.example.backendbanco.repository.MovimientoRepository;
@@ -58,12 +59,18 @@ public class MovimientoController {
                 .body(list);
     }
     @GetMapping(value = "/show/{id}")
-    public ResponseEntity show(@PathVariable Long id) {
-        Optional<Movimiento> cta = repository.findById(id);
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        Optional<Movimiento> movimiento = repository.findById(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(cta);
+        Respuesta respuesta = Respuesta.builder()
+                .status(200)
+                .type("success")
+                .title("Perfecto!")
+                .message("Se encontró el movimiento con éxito.")
+                .data(movimiento)
+                .build();
+
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     @PostMapping(value = "/create-update")
@@ -98,7 +105,7 @@ public class MovimientoController {
     }
 
     @PostMapping(value = "/search/filters")
-    public void createUpdate(@RequestBody FilterRequest request, HttpServletResponse response) throws IOException {
+    public void searchFilters(@RequestBody FilterRequest request, HttpServletResponse response) throws IOException {
         movimientos = repository
                 .findByFechaBetweenAndCuentaClienteNombre(request.fechaInicio, request.fechaFin, request.nombreCliente);
 
