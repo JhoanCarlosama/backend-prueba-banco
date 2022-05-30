@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class FilterRequest {
-    public String nombreCliente;
+    public Long idCliente;
     public LocalDate fechaInicio;
     public LocalDate fechaFin;
 }

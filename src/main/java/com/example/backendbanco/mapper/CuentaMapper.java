@@ -32,7 +32,7 @@ public class CuentaMapper {
         aux.setTelefono(dto.getCliente().getTelefono());
 
         Cuenta obj = new Cuenta();
-        obj.setId(obj.getId());
+        obj.setId(dto.getId());
         obj.setNumero(dto.getNumero());
         obj.setSaldo(dto.getSaldo());
         obj.setCliente(aux);

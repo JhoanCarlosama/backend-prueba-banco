@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -82,11 +83,27 @@ public class ClienteController {
     }
 
     @GetMapping(value = "/search/name/{name}")
-    public ResponseEntity delete(@PathVariable String name) {
-        Cliente cliente = repository.findByNombre(name);
+    public ResponseEntity searchByName(@PathVariable String name) {
+        Cliente cliente = repository.findByNombreContainingIgnoreCase(name);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(cliente);
+        if(Objects.nonNull(cliente)) {
+            Respuesta respuesta = Respuesta.builder()
+                    .status(200)
+                    .type("success")
+                    .title("Perfecto!")
+                    .message("Se encontró el cliente con éxito.")
+                    .data(cliente)
+                    .build();
+            return new ResponseEntity<>(respuesta, HttpStatus.OK);
+        } else {
+            Respuesta respuesta = Respuesta.builder()
+                    .status(400)
+                    .type("error")
+                    .title("Error!")
+                    .message("No se encontró ningún cliente con el nombre: "+ name + ".")
+                    .data(null)
+                    .build();
+            return new ResponseEntity<>(respuesta, HttpStatus.ACCEPTED);
+        }
     }
 }

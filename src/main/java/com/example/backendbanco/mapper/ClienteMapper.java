@@ -17,7 +17,7 @@ public class ClienteMapper {
 
     public Cliente clienteDtoToCliente(ClienteDto dto){
         Cliente obj = new Cliente();
-        obj.setId(obj.getId());
+        obj.setId(dto.getId());
         obj.setNombre(dto.getNombre());
         obj.setDireccion(dto.getDireccion());
         obj.setTelefono(dto.getTelefono());

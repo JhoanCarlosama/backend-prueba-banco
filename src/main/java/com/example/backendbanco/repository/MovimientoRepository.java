@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface MovimientoRepository  extends JpaRepository<Movimiento, Long> {
 
-    List<Movimiento> findByFechaBetweenAndCuentaClienteNombre(LocalDate fechaInicio, LocalDate fechaFin, String nombreCliente);
+    List<Movimiento> findByFechaBetweenAndCuentaClienteId(LocalDate fechaInicio, LocalDate fechaFin, Long id);
 }

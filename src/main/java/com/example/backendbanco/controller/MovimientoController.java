@@ -106,14 +106,14 @@ public class MovimientoController {
 
     @PostMapping(value = "/search/filters")
     public void searchFilters(@RequestBody FilterRequest request, HttpServletResponse response) throws IOException {
-        movimientos = repository
-                .findByFechaBetweenAndCuentaClienteNombre(request.fechaInicio, request.fechaFin, request.nombreCliente);
+        List<Movimiento> movimientos = repository
+                .findByFechaBetweenAndCuentaClienteId(request.fechaInicio, request.fechaFin, request.idCliente);
 
-        exportToExcel(response);
+        exportToExcel(response, movimientos);
     }
 
     @GetMapping("/export/excel")
-    public void exportToExcel(HttpServletResponse response) throws IOException {
+    public void exportToExcel(HttpServletResponse response, List<Movimiento> movimientos) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -121,9 +121,7 @@ public class MovimientoController {
         String headerValue = "attachment; filename=movimientos_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<Movimiento> list = movimientos;
-
-        ExcelExporter excelExporter = new ExcelExporter(list);
+        ExcelExporter excelExporter = new ExcelExporter(movimientos);
         excelExporter.export(response);
     }
 }

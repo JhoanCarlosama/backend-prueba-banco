@@ -6,6 +6,7 @@ import com.example.backendbanco.dto.MovimientoDto;
 import com.example.backendbanco.entity.Cliente;
 import com.example.backendbanco.entity.Cuenta;
 import com.example.backendbanco.entity.Movimiento;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -24,6 +25,7 @@ public class MovimientoMapper {
         clienteDto.setTelefono(obj.getCuenta().getCliente().getTelefono());
 
         CuentaDto ctaDto = new CuentaDto();
+        //ctaDto.setId(obj.getCuenta().getId());
         ctaDto.setId(obj.getId());
         ctaDto.setNumero(obj.getCuenta().getNumero());
         ctaDto.setSaldo(obj.getCuenta().getSaldo());
@@ -47,6 +49,7 @@ public class MovimientoMapper {
         cliente.setTelefono(dto.getCuenta().getCliente().getTelefono());
 
         Cuenta cta = new Cuenta();
+        //cta.setId(dto.getCuenta().getId());
         cta.setId(dto.getId());
         cta.setNumero(dto.getCuenta().getNumero());
         cta.setSaldo(dto.getCuenta().getSaldo());
