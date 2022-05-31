@@ -21,4 +21,18 @@ public class ClienteRepositoryTest {
         repository.save(cliente);
         Assertions.assertNotEquals(cliente.getId(), 0);
     }
+
+    @Test
+    void findByNombreContainingIgnoreCaseTest() {
+        Cliente cliente =  new Cliente();
+        cliente.setId(1L);
+        cliente.setNombre("Pepe Perez");
+        cliente.setDireccion("Casa 12");
+        cliente.setTelefono("3212222");
+
+        Assertions.assertEquals(
+                repository.findByNombreContainingIgnoreCase(
+                        cliente.getNombre()).getNombre(), "Pepe Perez");
+
+    }
 }

@@ -86,7 +86,9 @@ public class MovimientoController {
 
             repository.save(movimiento);
         } else {
-            repository.save(mapper.mvtoDtoToMvto(dto));
+            Cuenta cuenta = repositoryCta.findById(dto.getCuenta().getId()).orElse(null);
+
+            repository.save(mapper.mvtoDtoToMvto(dto, cuenta));
         }
 
         return ResponseEntity

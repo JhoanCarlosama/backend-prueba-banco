@@ -9,7 +9,8 @@
 ### Notas: El proyecto está conectado a una BD local creada con PostgreSQL, se debe restaurar la backup de la BD(banco.sql) anexa a este proyecto
 
 ### Modelo relacion Base de datos(Banco)
-![](../../../Users/jcarlosama/Desktop/prueba-banco.png)
+
+![](src/main/resources/banco-ER.png)
 
 ### Instalación
 1. Importar el proyecto como un proyecto Maven.
